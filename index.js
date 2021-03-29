@@ -15,6 +15,9 @@ class SSPlayer {
     this.handleDragStart = this.handleDragStart.bind(this);
     this.handleDragMove = this.handleDragMove.bind(this);
     this.handleDragEnd = this.handleDragEnd.bind(this);
+    this.handleProgress = this.handleProgress.bind(this);
+    this.handlePlay = this.handlePlay.bind(this);
+    this.handlePause = this.handlePause.bind(this);
 
     this.isMobile = /mobile/i.test(window.navigator.userAgent);
     this.selector = selector;
@@ -23,6 +26,8 @@ class SSPlayer {
     this.bind();
     this.current = 0;
     this.duration = 0;
+    this.playing = false;
+    this.dragging = false;
     this.dragEndTime = Date.now();
 
     instances.push(selector);
@@ -54,18 +59,26 @@ class SSPlayer {
       'ss-player__container',
       '$container',
       [
-        create('div', 'ss-player__current', '$current'),
-        create(
-          'div',
-          'ss-player__progress',
-          '$progress',
-          [
-            create('div', 'ss-player__slider', '$slider'),
-            create('div', 'ss-player__played', '$played'),
-            create('div', 'ss-player__loaded', '$loaded'),
-          ],
-        ),
-        create('div', 'ss-player__duration', '$duration'),
+        create('div', 'ss-player__board', '$board', [
+          create('div', 'ss-player__current', '$current'),
+          create(
+            'div',
+            'ss-player__progress',
+            '$progress',
+            [
+              create('div', 'ss-player__slider', '$slider'),
+              create('div', 'ss-player__played', '$played'),
+              create('div', 'ss-player__loaded', '$loaded'),
+            ],
+          ),
+          create('div', 'ss-player__duration', '$duration'),
+        ]),
+        create('div', 'ss-player__options', '$options', [
+          create('button', 'ss-player__button ss-player__prev', '$prev', 'prev'),
+          create('button', 'ss-player__button ss-player__play', '$play', 'play'),
+          create('button', 'ss-player__button ss-player__pause', '$pause', 'pause'),
+          create('button', 'ss-player__button ss-player__next', '$next', 'next'),
+        ]),
       ],
     );
 
@@ -79,14 +92,9 @@ class SSPlayer {
       this.$slider.addEventListener('mousedown', this.handleDragStart);
     }
 
-    this.$progress.addEventListener('click', e => {
-      if (Date.now() - this.dragEndTime > 10) {
-        const { width } = this.$progress.getClientRects()[0];
-        const percent = e.offsetX / width;
-
-        this.current = this.duration * percent;
-      }
-    });
+    this.$progress.addEventListener('click', this.handleProgress);
+    this.$play.addEventListener('click', this.handlePlay);
+    this.$pause.addEventListener('click', this.handlePause);
   }
 
   unbind() {
@@ -148,6 +156,23 @@ class SSPlayer {
     }
   }
 
+  handleProgress(e) {
+    if (Date.now() - this.dragEndTime > 10) {
+      const { width } = this.$progress.getClientRects()[0];
+      const percent = e.offsetX / width;
+
+      this.current = this.duration * percent;
+    }
+  }
+
+  handlePlay() {
+    this.playing = true;
+  }
+
+  handlePause() {
+    this.playing = false;
+  }
+
   complete(num) {
     return num < 10 ? `0${num}` : num;
   }
@@ -186,13 +211,25 @@ class SSPlayer {
     this.$duration.innerHTML = this.formatTime(value);
   }
 
+  get playing() {
+    return this._playing;
+  }
+
+  set playing(value) {
+    this._playing = value;
+
+    if (value) {
+      this.$play.style.display = 'none';
+      this.$pause.style.display = 'inline-block';
+    } else {
+      this.$play.style.display = 'inline-block';
+      this.$pause.style.display = 'none';
+    }
+  }
+
   destory() {
     this.unbind();
     this.$root.innerHTML = '';
     instances = instances.filter(selector => selector !== this.selector);
   }
 }
-
-const ssPlayer = new SSPlayer('.ss-player');
-
-ssPlayer.duration = 60;

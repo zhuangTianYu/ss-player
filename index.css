@@ -7,12 +7,16 @@
   box-sizing: border-box;
 }
 
-.ss-player__container > * {
+.ss-player__container * {
   user-select: none;
   -moz-user-select: none;
   -webkit-user-select: none;
   -ms-user-select: none;
   box-sizing: inherit;
+}
+
+.ss-player__board {
+  margin-bottom: 16px;
 }
 
 .ss-player__progress {
@@ -75,4 +79,19 @@
   vertical-align: middle;
   text-align: center;
   width: 70px;
+}
+
+.ss-player__options {
+  text-align: center;
+}
+
+.ss-player__button {
+  width: 56px;
+  line-height: 20px;
+  margin-right: 12px;
+  cursor: pointer;
+}
+
+.ss-player__button:last-child {
+  margin-right: 0;
 }

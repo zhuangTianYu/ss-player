@@ -6,9 +6,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ss-player</title>
   <link rel="stylesheet" href="./index.css">
+  <script src="./index.js"></script>
 </head>
 <body>
   <div class="ss-player"></div>
 </body>
-<script src="./index.js"></script>
+<script>
+  const ssPlayer = new SSPlayer('.ss-player');
+
+  ssPlayer.duration = 60;
+</script>
 </html>
