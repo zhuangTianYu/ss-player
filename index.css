@@ -63,11 +63,11 @@
 }
 
 .ss-player__loaded {
-  width: 80%;
   position: absolute;
   top: 0;
   bottom: 0;
   left: 0;
+  width: 0;
   border-radius: 4px;
   background-color: #8c8c8c;
   z-index: 10;

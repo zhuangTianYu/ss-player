@@ -12,8 +12,10 @@ class SSPlayer {
       return console.error(`Error: Exists player instance on "${selector}".`);
     }
 
-    this.onAudioCanPlay = this.onAudioCanPlay.bind(this);
-    this.onAudioTimeUpdate = this.onAudioTimeUpdate.bind(this);
+    this.onDurationChange = this.onDurationChange.bind(this);
+    this.onProgress = this.onProgress.bind(this);
+    this.onCanPlay = this.onCanPlay.bind(this);
+    this.onTimeUpdate = this.onTimeUpdate.bind(this);
     this.handleDragStart = this.handleDragStart.bind(this);
     this.handleDragMove = this.handleDragMove.bind(this);
     this.handleDragEnd = this.handleDragEnd.bind(this);
@@ -26,6 +28,7 @@ class SSPlayer {
     this.$root = $root;
     this.render();
     this.bind();
+    this.loaded = 0;
     this.current = 0;
     this.duration = 0;
     this.playing = false;
@@ -112,15 +115,27 @@ class SSPlayer {
   init() {
     this.$audio.src = 'https://music.163.com/song/media/outer/url?id=1817447929.mp3';
 
-    this.$audio.addEventListener('canplay', this.onAudioCanPlay);
-    this.$audio.addEventListener('timeupdate', this.onAudioTimeUpdate);
+    this.$audio.addEventListener('durationchange', this.onDurationChange);
+    this.$audio.addEventListener('progress', this.onProgress);
+    this.$audio.addEventListener('canplay', this.onCanPlay);
+    this.$audio.addEventListener('timeupdate', this.onTimeUpdate);
   }
 
-  onAudioCanPlay() {
+  onDurationChange() {
     this.duration = this.$audio.duration;
   }
 
-  onAudioTimeUpdate() {
+  onProgress() {
+    this.loaded = this.$audio.buffered.end(this.$audio.buffered.length - 1);
+  }
+
+  onCanPlay() {
+    console.log('on-audio-can-play');
+  }
+
+  onTimeUpdate() {
+    if (this.dragging) return;
+
     this.current = this.$audio.currentTime;
   }
 
@@ -165,6 +180,7 @@ class SSPlayer {
   handleDragEnd() {
     this.dragging = false;
     this.dragEndTime = Date.now();
+    this.$audio.currentTime = this.current;
 
     if (this.isMobile) {
       window.removeEventListener('touchmove', this.handleDragMove);
@@ -248,6 +264,18 @@ class SSPlayer {
       this.$play.style.display = 'inline-block';
       this.$pause.style.display = 'none';
     }
+  }
+
+  get loaded() {
+    return this._loaded;
+  }
+
+  set loaded(value) {
+    this._loaded = value;
+
+    const percent = value / this.duration;
+
+    this.$loaded.style.width = `${(percent * 100).toFixed(2)}%`;
   }
 
   destory() {
