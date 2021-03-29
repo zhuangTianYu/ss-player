@@ -1,0 +1,78 @@
+.ss-player__container {
+  min-width: 300px;
+  padding: 20px 4px;
+  color: #595959;
+  font-size: 14px;
+  border: 1px solid #d9d9d9;
+  box-sizing: border-box;
+}
+
+.ss-player__container > * {
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  box-sizing: inherit;
+}
+
+.ss-player__progress {
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+  width: calc(100% - 140px);
+  height: 6px;
+  border-radius: 3px;
+  background-color: #d9d9d9;
+  cursor: pointer;
+}
+
+.ss-player__progress::after {
+  content: '';
+  position: absolute;
+  top: -5px;
+  right: 0;
+  bottom: -5px;
+  left: 0;
+}
+
+.ss-player__slider {
+  position: absolute;
+  top: -5px;
+  left: 0;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background-color: #434343;
+  transform: translateX(-50%);
+  z-index: 30;
+  cursor: pointer;
+}
+
+.ss-player__played {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  border-radius: 4px;
+  background-color: #434343;
+  z-index: 20;
+}
+
+.ss-player__loaded {
+  width: 80%;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  border-radius: 4px;
+  background-color: #8c8c8c;
+  z-index: 10;
+}
+
+.ss-player__current,
+.ss-player__duration {
+  display: inline-block;
+  vertical-align: middle;
+  text-align: center;
+  width: 70px;
+}
