@@ -12,6 +12,8 @@ class SSPlayer {
       return console.error(`Error: Exists player instance on "${selector}".`);
     }
 
+    this.onAudioCanPlay = this.onAudioCanPlay.bind(this);
+    this.onAudioTimeUpdate = this.onAudioTimeUpdate.bind(this);
     this.handleDragStart = this.handleDragStart.bind(this);
     this.handleDragMove = this.handleDragMove.bind(this);
     this.handleDragEnd = this.handleDragEnd.bind(this);
@@ -29,6 +31,7 @@ class SSPlayer {
     this.playing = false;
     this.dragging = false;
     this.dragEndTime = Date.now();
+    this.init();
 
     instances.push(selector);
 
@@ -79,6 +82,7 @@ class SSPlayer {
           create('button', 'ss-player__button ss-player__pause', '$pause', 'pause'),
           create('button', 'ss-player__button ss-player__next', '$next', 'next'),
         ]),
+        create('audio', 'ss-player__audio', '$audio'),
       ],
     );
 
@@ -103,6 +107,21 @@ class SSPlayer {
     } else {
       this.$slider.removeEventListener('mousedown', this.handleDragStart);
     }
+  }
+
+  init() {
+    this.$audio.src = 'https://music.163.com/song/media/outer/url?id=1817447929.mp3';
+
+    this.$audio.addEventListener('canplay', this.onAudioCanPlay);
+    this.$audio.addEventListener('timeupdate', this.onAudioTimeUpdate);
+  }
+
+  onAudioCanPlay() {
+    this.duration = this.$audio.duration;
+  }
+
+  onAudioTimeUpdate() {
+    this.current = this.$audio.currentTime;
   }
 
   handleDragStart() {
@@ -160,17 +179,21 @@ class SSPlayer {
     if (Date.now() - this.dragEndTime > 10) {
       const { width } = this.$progress.getClientRects()[0];
       const percent = e.offsetX / width;
+      const current = this.duration * percent;
 
-      this.current = this.duration * percent;
+      this.current = current;
+      this.$audio.currentTime = current;
     }
   }
 
   handlePlay() {
     this.playing = true;
+    this.$audio.play();
   }
 
   handlePause() {
     this.playing = false;
+    this.$audio.pause();
   }
 
   complete(num) {
