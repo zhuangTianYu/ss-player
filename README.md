@@ -34,18 +34,18 @@
 ```javascript
 const list = [
   {
-    id: 1817447929,
-    name: 'HAVE A NICE DAY',
-    author: '魏如萱',
-    src: 'https://music.163.com/song/media/outer/url?id=1817447929.mp3',
-    cover: 'http://p1.music.126.net/0D5GQ9bVGVbG1G_Zd46xJQ==/109951165691103657.jpg?param=130y130',
+    id: 485508366,
+    name: '孤独症DEMO',
+    author: '功夫胖KungFuPen / KEY.L刘聪',
+    src: 'https://music.163.com/song/media/outer/url?id=485508366.mp3',
+    cover: 'http://p1.music.126.net/52rLhBNVfT1wZJW0eYcvpQ==/109951162938499438.jpg?param=130y130',
   },
   {
-    id: 1317457805,
-    name: '披星戴月的想你',
-    author: '告五人',
-    src: 'https://music.163.com/song/media/outer/url?id=1317457805.mp3',
-    cover: 'http://p2.music.126.net/NHOypDpCMWUSmGGdA2lXGQ==/109951163608032298.jpg?param=130y130',
+    id: 31445772,
+    name: '理想三旬',
+    author: '陈鸿宇',
+    src: 'https://music.163.com/song/media/outer/url?id=31445772.mp3',
+    cover: 'http://p1.music.126.net/cqTTEPAaxXG3cOwaE4E_-g==/109951163104103366.jpg?param=130y130',
   },
   {
     id: 487192031,

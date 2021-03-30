@@ -1,7 +1,13 @@
 let instances = [];
 
 class SSPlayer {
-  constructor(selector) {
+  constructor(config) {
+    const {
+      selector,
+      autoplay = false,
+      list = [],
+    } = config;
+
     const $root = document.querySelector(selector);
 
     if (!$root) {
@@ -12,29 +18,37 @@ class SSPlayer {
       return console.error(`Error: Exists player instance on "${selector}".`);
     }
 
+    if (!(Array.isArray(list) && list.length)) {
+      return console.error(`Error: List must be an array with length.`);
+    }
+
     this.onDurationChange = this.onDurationChange.bind(this);
     this.onProgress = this.onProgress.bind(this);
     this.onCanPlay = this.onCanPlay.bind(this);
     this.onTimeUpdate = this.onTimeUpdate.bind(this);
+    this.onEnded = this.onEnded.bind(this);
     this.handleDragStart = this.handleDragStart.bind(this);
     this.handleDragMove = this.handleDragMove.bind(this);
     this.handleDragEnd = this.handleDragEnd.bind(this);
     this.handleProgress = this.handleProgress.bind(this);
     this.handlePlay = this.handlePlay.bind(this);
     this.handlePause = this.handlePause.bind(this);
+    this.handlePrev = this.handlePrev.bind(this);
+    this.handleNext = this.handleNext.bind(this);
 
     this.isMobile = /mobile/i.test(window.navigator.userAgent);
     this.selector = selector;
+    this.list = list;
     this.$root = $root;
     this.render();
     this.bind();
     this.loaded = 0;
     this.current = 0;
     this.duration = 0;
-    this.playing = false;
+    this.playing = autoplay;
     this.dragging = false;
     this.dragEndTime = Date.now();
-    this.init();
+    this.index = 0;
 
     instances.push(selector);
 
@@ -102,6 +116,14 @@ class SSPlayer {
     this.$progress.addEventListener('click', this.handleProgress);
     this.$play.addEventListener('click', this.handlePlay);
     this.$pause.addEventListener('click', this.handlePause);
+    this.$prev.addEventListener('click', this.handlePrev);
+    this.$next.addEventListener('click', this.handleNext);
+
+    this.$audio.addEventListener('durationchange', this.onDurationChange);
+    this.$audio.addEventListener('progress', this.onProgress);
+    this.$audio.addEventListener('canplay', this.onCanPlay);
+    this.$audio.addEventListener('timeupdate', this.onTimeUpdate);
+    this.$audio.addEventListener('ended', this.onEnded);
   }
 
   unbind() {
@@ -110,15 +132,6 @@ class SSPlayer {
     } else {
       this.$slider.removeEventListener('mousedown', this.handleDragStart);
     }
-  }
-
-  init() {
-    this.$audio.src = 'https://music.163.com/song/media/outer/url?id=1817447929.mp3';
-
-    this.$audio.addEventListener('durationchange', this.onDurationChange);
-    this.$audio.addEventListener('progress', this.onProgress);
-    this.$audio.addEventListener('canplay', this.onCanPlay);
-    this.$audio.addEventListener('timeupdate', this.onTimeUpdate);
   }
 
   onDurationChange() {
@@ -130,13 +143,19 @@ class SSPlayer {
   }
 
   onCanPlay() {
-    console.log('on-audio-can-play');
+    if (this.playing) {
+      this.$audio.play();
+    }
   }
 
   onTimeUpdate() {
     if (this.dragging) return;
 
     this.current = this.$audio.currentTime;
+  }
+
+  onEnded() {
+    this.index = this.index;
   }
 
   handleDragStart() {
@@ -212,6 +231,14 @@ class SSPlayer {
     this.$audio.pause();
   }
 
+  handlePrev() {
+    this.index = (this.index - 1 + this.list.length) % this.list.length;
+  }
+
+  handleNext() {
+    this.index = (this.index + 1) % this.list.length;
+  }
+
   complete(num) {
     return num < 10 ? `0${num}` : num;
   }
@@ -271,16 +298,31 @@ class SSPlayer {
   }
 
   set loaded(value) {
-    this._loaded = value;
-
     const percent = value / this.duration;
 
+    this._loaded = value;
     this.$loaded.style.width = `${(percent * 100).toFixed(2)}%`;
+  }
+
+  get index() {
+    return this._index;
+  }
+
+  set index(value) {
+    this._index = value;
+
+    this.loaded = 0;
+    this.current = 0;
+    this.duration = 0;
+
+    const item = list[value];
+
+    this.$audio.src = item.src;
   }
 
   destory() {
     this.unbind();
-    this.$root.innerHTML = '';
+    this.$root.innerHTML = null;
     instances = instances.filter(selector => selector !== this.selector);
   }
 }
