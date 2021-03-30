@@ -32,10 +32,34 @@
 ## usage
 
 ```javascript
+const list = [
+  {
+    id: 1817447929,
+    name: 'HAVE A NICE DAY',
+    author: '魏如萱',
+    src: 'https://music.163.com/song/media/outer/url?id=1817447929.mp3',
+    cover: 'http://p1.music.126.net/0D5GQ9bVGVbG1G_Zd46xJQ==/109951165691103657.jpg?param=130y130',
+  },
+  {
+    id: 1317457805,
+    name: '披星戴月的想你',
+    author: '告五人',
+    src: 'https://music.163.com/song/media/outer/url?id=1317457805.mp3',
+    cover: 'http://p2.music.126.net/NHOypDpCMWUSmGGdA2lXGQ==/109951163608032298.jpg?param=130y130',
+  },
+  {
+    id: 487192031,
+    name: '蓝雨',
+    author: '张学友',
+    src: 'https://music.163.com/song/media/outer/url?id=487192031.mp3',
+    cover: 'http://p2.music.126.net/ubumnc-u_9hP7MOpZg4ygw==/18644418674184686.jpg?param=130y130',
+  },
+];
+
 const config = {
-  selector: '.ssl-player',
-  list: [],
+  selector: '.ss-player',
   autoplay: false,
+  list,
 };
 
 const ssPlayer = new SSPlayer(config);
