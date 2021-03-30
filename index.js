@@ -36,6 +36,11 @@ class SSPlayer {
     this.handlePrev = this.handlePrev.bind(this);
     this.handleNext = this.handleNext.bind(this);
 
+    this.play = this.handlePlay;
+    this.pause = this.handlePause;
+    this.prev = this.handlePrev;
+    this.next = this.handleNext;
+
     this.isMobile = /mobile/i.test(window.navigator.userAgent);
     this.selector = selector;
     this.list = list;

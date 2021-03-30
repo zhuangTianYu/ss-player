@@ -21,13 +21,13 @@
 
 ## api
 
-| 方法名 | 说明 | 参数 | 类型 | 必传 | 默认值 |
-| - | - | - | - | - | - |
-| play | 播放指定音频 | index | number | n | 0 |
-| pause | 暂停 |  |  |  |  |
-| prev | 播放上条音频 |  |  |  |  |
-| next | 播放下条音频 |  |  |  |  |
-| destory | 销毁实例 |  |  |  |  |
+| 方法名 | 说明 | 用法 |
+| - | - | - |
+| play | 播放 | ssPlayer.play() |
+| pause | 暂停 | ssPlayer.pause() |
+| prev | 播放上条音频 | ssPlayer.prev() |
+| next | 播放下条音频 | ssPlayer.next() |
+| destory | 销毁实例 | ssPlayer.destory() |
 
 ## usage
 
