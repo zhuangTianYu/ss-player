@@ -34,25 +34,25 @@
 ```javascript
 const list = [
   {
-    id: 485508366,
-    name: '孤独症DEMO',
-    author: '功夫胖KungFuPen / KEY.L刘聪',
-    src: 'https://music.163.com/song/media/outer/url?id=485508366.mp3',
-    cover: 'http://p1.music.126.net/52rLhBNVfT1wZJW0eYcvpQ==/109951162938499438.jpg?param=130y130',
+    id: 167977,
+    name: '七号公园',
+    author: '许嵩',
+    src: 'https://music.163.com/song/media/outer/url?id=167977.mp3',
+    cover: 'http://p1.music.126.net/yLnUrQMddgKLzvVEjeZG5Q==/6012129581027921.jpg?param=130y130',
   },
   {
-    id: 31445772,
-    name: '理想三旬',
-    author: '陈鸿宇',
-    src: 'https://music.163.com/song/media/outer/url?id=31445772.mp3',
-    cover: 'http://p1.music.126.net/cqTTEPAaxXG3cOwaE4E_-g==/109951163104103366.jpg?param=130y130',
+    id: 430793721,
+    name: '当妮走了',
+    author: '徐真真',
+    src: 'https://music.163.com/song/media/outer/url?id=430793721.mp3',
+    cover: 'http://p2.music.126.net/6rutfuUq9RFByWwGNy_FrQ==/17939631719002226.jpg?param=130y130',
   },
   {
-    id: 487192031,
-    name: '蓝雨',
-    author: '张学友',
-    src: 'https://music.163.com/song/media/outer/url?id=487192031.mp3',
-    cover: 'http://p2.music.126.net/ubumnc-u_9hP7MOpZg4ygw==/18644418674184686.jpg?param=130y130',
+    id: 22201016,
+    name: '你快乐所以我快乐 (Live)',
+    author: '王菲',
+    src: 'https://music.163.com/song/media/outer/url?id=22201016.mp3',
+    cover: 'http://p1.music.126.net/3Qs4Hf3V4b00GjH7s1pJ8w==/109951163262931938.jpg?param=130y130',
   },
 ];
 

@@ -320,7 +320,7 @@ class SSPlayer {
     this.current = 0;
     this.duration = 0;
 
-    const item = list[value];
+    const item = this.list[value];
 
     this.$audio.src = item.src;
   }
@@ -331,3 +331,5 @@ class SSPlayer {
     instances = instances.filter(selector => selector !== this.selector);
   }
 }
+
+export default SSPlayer;
