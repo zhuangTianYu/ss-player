@@ -26,6 +26,7 @@ class SSPlayer {
     this.onProgress = this.onProgress.bind(this);
     this.onCanPlay = this.onCanPlay.bind(this);
     this.onTimeUpdate = this.onTimeUpdate.bind(this);
+    this.onPause = this.onPause.bind(this);
     this.onEnded = this.onEnded.bind(this);
     this.handleDragStart = this.handleDragStart.bind(this);
     this.handleDragMove = this.handleDragMove.bind(this);
@@ -128,6 +129,7 @@ class SSPlayer {
     this.$audio.addEventListener('progress', this.onProgress);
     this.$audio.addEventListener('canplay', this.onCanPlay);
     this.$audio.addEventListener('timeupdate', this.onTimeUpdate);
+    this.$audio.addEventListener('pause', this.onPause);
     this.$audio.addEventListener('ended', this.onEnded);
   }
 
@@ -157,6 +159,10 @@ class SSPlayer {
     if (this.dragging) return;
 
     this.current = this.$audio.currentTime;
+  }
+
+  onPause() {
+    this.playing = false;
   }
 
   onEnded() {
@@ -237,10 +243,12 @@ class SSPlayer {
   }
 
   handlePrev() {
+    this.playing = true;
     this.index = (this.index - 1 + this.list.length) % this.list.length;
   }
 
   handleNext() {
+    this.playing = true;
     this.index = (this.index + 1) % this.list.length;
   }
 
@@ -323,6 +331,7 @@ class SSPlayer {
     const item = this.list[value];
 
     this.$audio.src = item.src;
+    this.$audio.load();
   }
 
   destory() {
