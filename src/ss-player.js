@@ -1,10 +1,13 @@
 let instances = [];
 
+const modes = ['single', 'loop', 'random'];
+
 class SSPlayer {
   constructor(config) {
     const {
       selector,
       autoplay = false,
+      mode = 'loop',
       list = [],
     } = config;
 
@@ -16,6 +19,10 @@ class SSPlayer {
 
     if (instances.includes(selector)) {
       return console.error(`Error: Exists player instance on "${selector}".`);
+    }
+
+    if (!modes.includes(mode)) {
+      return console.error(`Error: Modes do not contains mode "${mode}".`);
     }
 
     if (!(Array.isArray(list) && list.length)) {
@@ -36,6 +43,7 @@ class SSPlayer {
     this.handlePause = this.handlePause.bind(this);
     this.handlePrev = this.handlePrev.bind(this);
     this.handleNext = this.handleNext.bind(this);
+    this.handleMode = this.handleMode.bind(this);
 
     this.play = this.handlePlay;
     this.pause = this.handlePause;
@@ -48,6 +56,7 @@ class SSPlayer {
     this.$root = $root;
     this.render();
     this.bind();
+    this.mode = mode;
     this.loaded = 0;
     this.current = 0;
     this.duration = 0;
@@ -104,6 +113,7 @@ class SSPlayer {
           create('button', 'ss-player__button ss-player__play', '$play', 'play'),
           create('button', 'ss-player__button ss-player__pause', '$pause', 'pause'),
           create('button', 'ss-player__button ss-player__next', '$next', 'next'),
+          create('button', 'ss-player__button ss-player__mode', '$mode'),
         ]),
         create('audio', 'ss-player__audio', '$audio'),
       ],
@@ -124,6 +134,7 @@ class SSPlayer {
     this.$pause.addEventListener('click', this.handlePause);
     this.$prev.addEventListener('click', this.handlePrev);
     this.$next.addEventListener('click', this.handleNext);
+    this.$mode.addEventListener('click', this.handleMode);
 
     this.$audio.addEventListener('durationchange', this.onDurationChange);
     this.$audio.addEventListener('progress', this.onProgress);
@@ -162,11 +173,26 @@ class SSPlayer {
   }
 
   onPause() {
-    this.playing = false;
+    // this.playing = false;
   }
 
   onEnded() {
-    this.index = this.index;
+    this.index = this.getNextIndexByMode();
+  }
+
+  getNextIndexByMode() {
+    switch(this.mode) {
+      case 'single':
+        return this.index;
+      case 'loop':
+        return (this.index + 1) % this.list.length;
+      case 'random':
+        let nextIndex = this.index;
+        while(nextIndex === this.index) {
+          nextIndex = Math.round(Math.random() * (this.list.length - 1));
+        }
+        return nextIndex;
+    }
   }
 
   handleDragStart() {
@@ -252,6 +278,17 @@ class SSPlayer {
     this.index = (this.index + 1) % this.list.length;
   }
 
+  handleMode() {
+    this.mode = this.getNextMode();
+  }
+
+  getNextMode() {
+    const modeIndex = modes.indexOf(this.mode);
+    const nextModeIndex = (modeIndex + 1) % modes.length;
+
+    return modes[nextModeIndex];
+  }
+
   complete(num) {
     return num < 10 ? `0${num}` : num;
   }
@@ -332,6 +369,15 @@ class SSPlayer {
 
     this.$audio.src = item.src;
     this.$audio.load();
+  }
+
+  get mode() {
+    return this._mode;
+  }
+
+  set mode(value) {
+    this._mode = value;
+    this.$mode.innerHTML = value;
   }
 
   destory() {

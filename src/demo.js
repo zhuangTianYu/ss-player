@@ -28,6 +28,7 @@ const list = [
 const config = {
   selector: '.ss-player',
   autoplay: false,
+  mode: 'loop',
   list,
 };
 

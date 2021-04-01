@@ -12,6 +12,7 @@
 | - | - | - | - | - |
 | selector | 挂载实例元素 | string | y |  |
 | autoplay | 是否自动播放 | boolean | n | false |
+| mode | 播放模式 | string | n | loop |
 | list | 音频列表 | array | y | [] |
 | └─ item.id | 音频 id | number | y |  |
 | └─ item.name | 音频名称 | string | y |  |
@@ -59,6 +60,7 @@ const list = [
 const config = {
   selector: '.ss-player',
   autoplay: false,
+  mode: 'loop',
   list,
 };
 
